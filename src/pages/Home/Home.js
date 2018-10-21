@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import Container from '../../components/Container'
 import injectReducer from '../../utils/injectReducer'
 import homeReducer from './reducers'
 
 class Home extends Component {
   render() {
     return (
-      <div>
+      <Container>
         Home Page
-      </div>
+      </Container>
     )
   }
 }
