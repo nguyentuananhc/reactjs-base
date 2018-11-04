@@ -1,4 +1,10 @@
-export const UPDATE_USER = 'UPDATE_USER'
-export const LOGIN = 'LOGIN'
+import { createAction } from 'redux-actions'
 
-export const updateUser = user => ({ type: UPDATE_USER, user })
+export const LOGIN = 'LOGIN'
+export const LOGIN_REQUEST = 'LOGIN_REQUEST'
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+export const LOGIN_FAILURE = 'LOGIN_FAILURE'
+
+export const loginRequest = createAction(LOGIN_REQUEST)
+export const loginSuccess = createAction(LOGIN_SUCCESS)
+export const loginFailure = createAction(LOGIN_FAILURE)

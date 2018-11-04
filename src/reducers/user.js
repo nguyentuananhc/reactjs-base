@@ -1,17 +1,13 @@
-import { UPDATE_USER } from '../actions/user'
+import { handleActions } from 'redux-actions'
+import { LOGIN_SUCCESS } from '../actions/user'
 
 const initialState = {}
 
-const user = (state = initialState, action) => {
-  switch (action.type) {
-    case UPDATE_USER:
-      return {
-        ...state,
-        ...action.user,
-      }
-    default:
-      return state
-  }
-}
+const user = handleActions({
+  [LOGIN_SUCCESS]: (state, action) => ({
+    ...state,
+    ...action.payload,
+  }),
+}, initialState)
 
 export default user

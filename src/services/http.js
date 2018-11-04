@@ -1,22 +1,21 @@
 import axios from 'axios'
+import storage from '../utils/storage'
 
-const http = (token = null) => {
-  const { CancelToken } = axios
-  const source = CancelToken.source()
-  const defaultOptions = {
-    headers: {
-      Authorization: token ? `Token ${token}` : '',
-      cancelToken: source.token,
-    },
-  }
+const { CancelToken } = axios
+const source = CancelToken.source()
+const token = storage.get('user') ? storage.get('user').token : null
 
-  return {
-    get: (url, options = {}) => axios.get(url, { ...defaultOptions, ...options }),
-    post: (url, data, options = {}) => axios.post(url, data, { ...defaultOptions, ...options }),
-    put: (url, data, options = {}) => axios.put(url, data, { ...defaultOptions, ...options }),
-    delete: (url, options = {}) => axios.delete(url, { ...defaultOptions, ...options }),
-    cancel: source.cancel,
-  }
-}
+const baseURL = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:8000'
+  : 'http://localhost:8000'
+
+const http = axios.create({
+  baseURL,
+  headers: {
+    Accept: 'application/json',
+    cancelToken: source.token,
+    Authorization: token ? `Bearer ${token}` : '',
+  },
+})
 
 export default http

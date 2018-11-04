@@ -1,13 +1,19 @@
-import { call } from 'redux-saga/effects'
-import { takeLatest } from 'redux-saga/effects'
-import { LOGIN } from '../actions/user'
+import { takeLatest, call, put } from 'redux-saga/effects'
 
-function* handleLogin() {
+import { LOGIN_REQUEST, loginFailure, loginSuccess } from '../actions/user'
+import auth from '../services/auth'
+import http from '../services/http'
+import storage from '../utils/storage'
+
+function* loginSaga({ payload }) {
   try {
-    yield call(console.log, 'call log')
+    const user = yield call(auth.login, payload)
+    yield put(loginSuccess(user))
+    storage.set('user', user)
+    http.defaults.headers.common.Authorization = `Bearer ${user.token}`
   } catch (e) {
-    console.log(e)
+    yield put(loginFailure(e))
   }
 }
 
-export default [takeLatest(LOGIN, handleLogin)]
+export default [takeLatest(LOGIN_REQUEST, loginSaga)]
